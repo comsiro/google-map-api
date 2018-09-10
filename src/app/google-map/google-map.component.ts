@@ -1,6 +1,7 @@
 /// <reference path="../../../node_modules/@types/googlemaps/index.d.ts" />
 
 import { Component, AfterContentInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { GoogleApiService } from '../google-api.service'
 
 @Component({
   selector: 'app-google-map',
@@ -12,7 +13,8 @@ export class GoogleMapComponent implements AfterContentInit {
   @ViewChild('inputAddress') inputAddressElement: any;
   map: google.maps.Map;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef,
+    private ga: GoogleApiService) { }
 
   ngAfterContentInit() {
     this.search();
@@ -47,31 +49,8 @@ export class GoogleMapComponent implements AfterContentInit {
     }
   }
 
-  getLocation(address: string) {
-    return new Promise((resolve, reject) => {
-      if (navigator.onLine) {
-        let geocoder = new google.maps.Geocoder();
-        if (geocoder) {
-          geocoder.geocode({ 'address': address }, (results, status) => {
-            if (status == google.maps.GeocoderStatus.OK) {
-              resolve(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
-            }
-            else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-              resolve("No result found");
-            } else {
-              reject("Unknown error");
-            }
-          });
-        }
-      }
-      else {
-        alert("Your internet connection is unstable.");
-      }
-    });
-  }
-
   search() {
-    this.getLocation(this.inputAddressElement.nativeElement.value).then((location) => {
+    this.ga.getLocation(this.inputAddressElement.nativeElement.value).then((location) => {
       this.initMap(location)
     }).catch((error) => {
       console.log(error);

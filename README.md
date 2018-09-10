@@ -1,7 +1,6 @@
 # GoogleMapApi
 
-GoogleMapApi was created for a coding test from Allied Telesis Labs Ltd. 
-This application is SPA for searching locations through Google Map Api.
+This application is a sample SPA for searching locations through Google Map Api.
 
 This project was generated with Angular CLI 6.0.8.
 
